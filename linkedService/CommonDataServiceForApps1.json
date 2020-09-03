@@ -1,0 +1,16 @@
+{
+	"name": "CommonDataServiceForApps1",
+	"type": "Microsoft.DataFactory/factories/linkedservices",
+	"properties": {
+		"annotations": [],
+		"type": "CommonDataServiceForApps",
+		"typeProperties": {
+			"deploymentType": "Online",
+			"serviceUri": "https://99ontarioinc.crm3.dynamics.com",
+			"authenticationType": "AADServicePrincipal",
+			"servicePrincipalCredentialType": "ServicePrincipalKey",
+			"servicePrincipalId": "27ce55cd-600e-42b0-9542-6b00375744f9",
+			"encryptedCredential": "ew0KICAiVmVyc2lvbiI6ICIyMDE3LTExLTMwIiwNCiAgIlByb3RlY3Rpb25Nb2RlIjogIktleSIsDQogICJTZWNyZXRDb250ZW50VHlwZSI6ICJQbGFpbnRleHQiLA0KICAiQ3JlZGVudGlhbElkIjogIkZPUkVTVEVSU0RBVEFGQUNUT1JZXzQyZGVkOTRmLTE1ODQtNDQ0NC1iZTBlLTA4NDcwODY0NTBmNSINCn0="
+		}
+	}
+}

@@ -1,0 +1,175 @@
+{
+	"name": "ForestersContacts",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureBlobStorageForesters",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Excel",
+		"typeProperties": {
+			"sheetName": "Contact",
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"fileName": "Foresters -  Active Contacts.xlsx",
+				"container": "foresters"
+			},
+			"firstRowAsHeader": true
+		},
+		"schema": [
+			{
+				"name": "(Do Not Modify)Contact",
+				"type": "String"
+			},
+			{
+				"name": "(Do Not Modify)Checksum",
+				"type": "String"
+			},
+			{
+				"name": "(Do Not Modify)Modified On",
+				"type": "String"
+			},
+			{
+				"name": "Contact",
+				"type": "String"
+			},
+			{
+				"name": "First Name",
+				"type": "String"
+			},
+			{
+				"name": "Last Name",
+				"type": "String"
+			},
+			{
+				"name": "Middle Name",
+				"type": "String"
+			},
+			{
+				"name": "SSN/SIN",
+				"type": "String"
+			},
+			{
+				"name": "Home Phone",
+				"type": "String"
+			},
+			{
+				"name": "Primary Phone",
+				"type": "String"
+			},
+			{
+				"name": "(Do Not Modify)Primary Phone",
+				"type": "String"
+			},
+			{
+				"name": "Mobile Phone",
+				"type": "String"
+			},
+			{
+				"name": "E-mail",
+				"type": "String"
+			},
+			{
+				"name": "Gender",
+				"type": "String"
+			},
+			{
+				"name": "(Do Not Modify)Gender",
+				"type": "String"
+			},
+			{
+				"name": "Date of Birth",
+				"type": "String"
+			},
+			{
+				"name": "Age",
+				"type": "String"
+			},
+			{
+				"name": "Marital Status",
+				"type": "String"
+			},
+			{
+				"name": "(Do Not Modify)Marital Status",
+				"type": "String"
+			},
+			{
+				"name": "Home : Street 1",
+				"type": "String"
+			},
+			{
+				"name": "Home : Street 2",
+				"type": "String"
+			},
+			{
+				"name": "Home City",
+				"type": "String"
+			},
+			{
+				"name": "Home State/Province",
+				"type": "String"
+			},
+			{
+				"name": "(Do Not Modify)Home State/Province",
+				"type": "String"
+			},
+			{
+				"name": "Home : ZIP/Postal Code",
+				"type": "String"
+			},
+			{
+				"name": "Home Country/Region",
+				"type": "String"
+			},
+			{
+				"name": "(Do Not Modify)Home Country/Region",
+				"type": "String"
+			},
+			{
+				"name": "Member",
+				"type": "String"
+			},
+			{
+				"name": "(Do Not Modify)Member",
+				"type": "String"
+			},
+			{
+				"name": "Producer",
+				"type": "String"
+			},
+			{
+				"name": "(Do Not Modify)Producer",
+				"type": "String"
+			},
+			{
+				"name": "Branch",
+				"type": "String"
+			},
+			{
+				"name": "(Do Not Modify)Branch",
+				"type": "String"
+			},
+			{
+				"name": "Description",
+				"type": "String"
+			},
+			{
+				"name": "HouseHold",
+				"type": "String"
+			},
+			{
+				"name": "(Do Not Modify)HouseHold",
+				"type": "String"
+			},
+			{
+				"name": "Status",
+				"type": "String"
+			},
+			{
+				"name": "(Do Not Modify)Status",
+				"type": "String"
+			}
+		]
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

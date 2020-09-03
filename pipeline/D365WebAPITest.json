@@ -1,0 +1,84 @@
+{
+	"name": "D365WebAPITest",
+	"properties": {
+		"description": "D365WebAPITest",
+		"activities": [
+			{
+				"name": "GetD365AccessToken",
+				"type": "WebActivity",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"url": {
+						"value": "@concat('https://login.microsoftonline.com/', variables('TenantID'), '/oauth2/token')",
+						"type": "Expression"
+					},
+					"method": "POST",
+					"headers": {
+						"Content-Type": "application/x-www-form-urlencoded"
+					},
+					"body": {
+						"value": "@variables('AuthRequestBody')",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "WhoAmIReques",
+				"description": "WhoAmIReques",
+				"type": "WebActivity",
+				"dependsOn": [
+					{
+						"activity": "GetD365AccessToken",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"url": "https://99ontarioinc.crm3.dynamics.com/api/data/v9.1/WhoAmI",
+					"method": "GET",
+					"headers": {
+						"Authorization": {
+							"value": "@concat('Bearer ', activity('GetD365AccessToken').output.access_token)",
+							"type": "Expression"
+						}
+					}
+				}
+			}
+		],
+		"concurrency": 1,
+		"variables": {
+			"TenantID": {
+				"type": "String",
+				"defaultValue": "aee40b0d-a143-47a9-a9e2-7bc10aeaae4e"
+			},
+			"AuthRequestBody": {
+				"type": "String",
+				"defaultValue": "client_id=27ce55cd-600e-42b0-9542-6b00375744f9&grant_type=client_credentials&redirect_uri=https%3A%2F%2Fadf.azure.com%2F&resource=https%3A%2F%2F99ontarioinc.crm3.dynamics.com%2F&client_secret=SjM_A-_89SH504.bEfD5xM.jqYWvav.gZm"
+			},
+			"D365URL": {
+				"type": "String",
+				"defaultValue": "https://99ontarioinc.crm3.dynamics.com/"
+			}
+		},
+		"annotations": [],
+		"lastPublishTime": "2020-09-03T14:06:51Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}
