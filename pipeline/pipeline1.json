@@ -43,7 +43,7 @@
 									"name": "ContactId"
 								},
 								"sink": {
-									"name": "accountid",
+									"name": "contactid",
 									"type": "Guid"
 								}
 							},
@@ -52,7 +52,7 @@
 									"name": "Full Name"
 								},
 								"sink": {
-									"name": "accountidname",
+									"name": "fullname",
 									"type": "String"
 								}
 							},
@@ -61,7 +61,7 @@
 									"name": "First Name"
 								},
 								"sink": {
-									"name": "accountidyominame",
+									"name": "firstname",
 									"type": "String"
 								}
 							},
@@ -70,8 +70,8 @@
 									"name": "Last Name"
 								},
 								"sink": {
-									"name": "accountrolecode",
-									"type": "Int32"
+									"name": "lastname",
+									"type": "String"
 								}
 							},
 							{
@@ -79,8 +79,8 @@
 									"name": "Middle Name"
 								},
 								"sink": {
-									"name": "address1_addressid",
-									"type": "Guid"
+									"name": "middlename",
+									"type": "String"
 								}
 							},
 							{
@@ -97,7 +97,7 @@
 									"name": "Home Phone"
 								},
 								"sink": {
-									"name": "address1_city",
+									"name": "telephone1",
 									"type": "String"
 								}
 							},
@@ -106,7 +106,7 @@
 									"name": "Primary Phone"
 								},
 								"sink": {
-									"name": "address1_composite",
+									"name": "telephone2",
 									"type": "String"
 								}
 							},
@@ -115,7 +115,7 @@
 									"name": "Mobile Phone"
 								},
 								"sink": {
-									"name": "address1_country",
+									"name": "telephone3",
 									"type": "String"
 								}
 							},
@@ -124,7 +124,7 @@
 									"name": "E-mail"
 								},
 								"sink": {
-									"name": "address1_county",
+									"name": "emailaddress1",
 									"type": "String"
 								}
 							},
@@ -133,8 +133,8 @@
 									"name": "Gender"
 								},
 								"sink": {
-									"name": "address1_fax",
-									"type": "String"
+									"name": "gendercode",
+									"type": "Int32"
 								}
 							},
 							{
@@ -142,8 +142,8 @@
 									"name": "Date of Birth"
 								},
 								"sink": {
-									"name": "address1_freighttermscode",
-									"type": "Int32"
+									"name": "birthdate",
+									"type": "DateTime"
 								}
 							},
 							{
@@ -151,8 +151,8 @@
 									"name": "Marital Status"
 								},
 								"sink": {
-									"name": "address1_latitude",
-									"type": "Double"
+									"name": "familystatuscode",
+									"type": "Int32"
 								}
 							},
 							{
@@ -178,7 +178,7 @@
 									"name": "Home City"
 								},
 								"sink": {
-									"name": "address1_line3",
+									"name": "address1_city",
 									"type": "String"
 								}
 							},
@@ -187,22 +187,13 @@
 									"name": "Home State/Province"
 								},
 								"sink": {
-									"name": "address1_longitude",
-									"type": "Double"
-								}
-							},
-							{
-								"source": {
-									"name": "Home : ZIP/Postal Code"
-								},
-								"sink": {
-									"name": "address1_name",
+									"name": "address1_stateorprovince",
 									"type": "String"
 								}
 							},
 							{
 								"source": {
-									"name": "Home Country/Region"
+									"name": "Home : ZIP/Postal Code"
 								},
 								"sink": {
 									"name": "address1_postalcode",
@@ -211,11 +202,20 @@
 							},
 							{
 								"source": {
+									"name": "Home Country/Region"
+								},
+								"sink": {
+									"name": "address1_country",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
 									"name": "Member"
 								},
 								"sink": {
-									"name": "address1_postofficebox",
-									"type": "String"
+									"name": "new_member",
+									"type": "Boolean"
 								}
 							},
 							{
@@ -223,8 +223,8 @@
 									"name": "Producer"
 								},
 								"sink": {
-									"name": "address1_primarycontactname",
-									"type": "String"
+									"name": "new_producer",
+									"type": "Boolean"
 								}
 							},
 							{
@@ -232,8 +232,8 @@
 									"name": "Branch"
 								},
 								"sink": {
-									"name": "address1_shippingmethodcode",
-									"type": "Int32"
+									"name": "new_branchname",
+									"type": "String"
 								}
 							},
 							{
@@ -241,7 +241,7 @@
 									"name": "HouseHold"
 								},
 								"sink": {
-									"name": "address1_stateorprovince",
+									"name": "new_householdname",
 									"type": "String"
 								}
 							},
@@ -250,8 +250,8 @@
 									"name": "Status"
 								},
 								"sink": {
-									"name": "address1_telephone1",
-									"type": "String"
+									"name": "statecode",
+									"type": "Int32"
 								}
 							},
 							{
