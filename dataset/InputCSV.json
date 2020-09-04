@@ -1,0 +1,120 @@
+{
+	"name": "InputCSV",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureBlobStorage1",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"fileName": "Foresters - Active Contacts 2.csv",
+				"container": "foresters"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": [
+			{
+				"name": "ContactId",
+				"type": "String"
+			},
+			{
+				"name": "Full Name",
+				"type": "String"
+			},
+			{
+				"name": "First Name",
+				"type": "String"
+			},
+			{
+				"name": "Last Name",
+				"type": "String"
+			},
+			{
+				"name": "Middle Name",
+				"type": "String"
+			},
+			{
+				"name": "SSN/SIN",
+				"type": "String"
+			},
+			{
+				"name": "Home Phone",
+				"type": "String"
+			},
+			{
+				"name": "Primary Phone",
+				"type": "String"
+			},
+			{
+				"name": "Mobile Phone",
+				"type": "String"
+			},
+			{
+				"name": "E-mail",
+				"type": "String"
+			},
+			{
+				"name": "Gender",
+				"type": "String"
+			},
+			{
+				"name": "Date of Birth",
+				"type": "String"
+			},
+			{
+				"name": "Marital Status",
+				"type": "String"
+			},
+			{
+				"name": "Home : Street 1",
+				"type": "String"
+			},
+			{
+				"name": "Home : Street 2",
+				"type": "String"
+			},
+			{
+				"name": "Home City",
+				"type": "String"
+			},
+			{
+				"name": "Home State/Province",
+				"type": "String"
+			},
+			{
+				"name": "Home : ZIP/Postal Code",
+				"type": "String"
+			},
+			{
+				"name": "Home Country/Region",
+				"type": "String"
+			},
+			{
+				"name": "Member",
+				"type": "String"
+			},
+			{
+				"name": "Producer",
+				"type": "String"
+			},
+			{
+				"name": "Branch",
+				"type": "String"
+			},
+			{
+				"name": "HouseHold",
+				"type": "String"
+			},
+			{
+				"name": "Status",
+				"type": "String"
+			}
+		]
+	}
+}
