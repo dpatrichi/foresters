@@ -40,7 +40,8 @@
 						"mappings": [
 							{
 								"source": {
-									"name": "ContactId"
+									"name": "ContactId",
+									"type": "Guid"
 								},
 								"sink": {
 									"name": "contactid",
@@ -49,7 +50,8 @@
 							},
 							{
 								"source": {
-									"name": "Full Name"
+									"name": "Full Name",
+									"type": "String"
 								},
 								"sink": {
 									"name": "fullname",
@@ -58,7 +60,8 @@
 							},
 							{
 								"source": {
-									"name": "First Name"
+									"name": "First Name",
+									"type": "String"
 								},
 								"sink": {
 									"name": "firstname",
@@ -67,7 +70,8 @@
 							},
 							{
 								"source": {
-									"name": "Last Name"
+									"name": "Last Name",
+									"type": "String"
 								},
 								"sink": {
 									"name": "lastname",
@@ -76,7 +80,8 @@
 							},
 							{
 								"source": {
-									"name": "Middle Name"
+									"name": "Middle Name",
+									"type": "String"
 								},
 								"sink": {
 									"name": "middlename",
@@ -85,7 +90,8 @@
 							},
 							{
 								"source": {
-									"name": "SSN/SIN"
+									"name": "SSN/SIN",
+									"type": "String"
 								},
 								"sink": {
 									"name": "new_socialsecuritynumber",
@@ -94,7 +100,8 @@
 							},
 							{
 								"source": {
-									"name": "Home Phone"
+									"name": "Home Phone",
+									"type": "String"
 								},
 								"sink": {
 									"name": "telephone1",
@@ -103,7 +110,8 @@
 							},
 							{
 								"source": {
-									"name": "Primary Phone"
+									"name": "Primary Phone",
+									"type": "String"
 								},
 								"sink": {
 									"name": "telephone2",
@@ -112,7 +120,8 @@
 							},
 							{
 								"source": {
-									"name": "Mobile Phone"
+									"name": "Mobile Phone",
+									"type": "String"
 								},
 								"sink": {
 									"name": "telephone3",
@@ -121,7 +130,8 @@
 							},
 							{
 								"source": {
-									"name": "E-mail"
+									"name": "E-mail",
+									"type": "String"
 								},
 								"sink": {
 									"name": "emailaddress1",
@@ -130,7 +140,8 @@
 							},
 							{
 								"source": {
-									"name": "Gender"
+									"name": "Gender",
+									"type": "Int16"
 								},
 								"sink": {
 									"name": "gendercode",
@@ -139,7 +150,8 @@
 							},
 							{
 								"source": {
-									"name": "Date of Birth"
+									"name": "Date of Birth",
+									"type": "String"
 								},
 								"sink": {
 									"name": "birthdate",
@@ -148,7 +160,8 @@
 							},
 							{
 								"source": {
-									"name": "Marital Status"
+									"name": "Marital Status",
+									"type": "Int16"
 								},
 								"sink": {
 									"name": "familystatuscode",
@@ -157,7 +170,8 @@
 							},
 							{
 								"source": {
-									"name": "Home : Street 1"
+									"name": "Home : Street 1",
+									"type": "String"
 								},
 								"sink": {
 									"name": "address1_line1",
@@ -166,7 +180,8 @@
 							},
 							{
 								"source": {
-									"name": "Home : Street 2"
+									"name": "Home : Street 2",
+									"type": "String"
 								},
 								"sink": {
 									"name": "address1_line2",
@@ -175,7 +190,8 @@
 							},
 							{
 								"source": {
-									"name": "Home City"
+									"name": "Home City",
+									"type": "String"
 								},
 								"sink": {
 									"name": "address1_city",
@@ -184,7 +200,8 @@
 							},
 							{
 								"source": {
-									"name": "Home State/Province"
+									"name": "Home State/Province",
+									"type": "String"
 								},
 								"sink": {
 									"name": "address1_stateorprovince",
@@ -193,7 +210,8 @@
 							},
 							{
 								"source": {
-									"name": "Home : ZIP/Postal Code"
+									"name": "Home : ZIP/Postal Code",
+									"type": "String"
 								},
 								"sink": {
 									"name": "address1_postalcode",
@@ -202,7 +220,8 @@
 							},
 							{
 								"source": {
-									"name": "Home Country/Region"
+									"name": "Home Country/Region",
+									"type": "String"
 								},
 								"sink": {
 									"name": "address1_country",
@@ -211,7 +230,8 @@
 							},
 							{
 								"source": {
-									"name": "Member"
+									"name": "Member",
+									"type": "Boolean"
 								},
 								"sink": {
 									"name": "new_member",
@@ -220,7 +240,8 @@
 							},
 							{
 								"source": {
-									"name": "Producer"
+									"name": "Producer",
+									"type": "Boolean"
 								},
 								"sink": {
 									"name": "new_producer",
@@ -229,7 +250,8 @@
 							},
 							{
 								"source": {
-									"name": "Branch"
+									"name": "Branch",
+									"type": "String"
 								},
 								"sink": {
 									"name": "new_branchname",
@@ -238,7 +260,8 @@
 							},
 							{
 								"source": {
-									"name": "HouseHold"
+									"name": "HouseHold",
+									"type": "String"
 								},
 								"sink": {
 									"name": "new_householdname",
@@ -247,7 +270,8 @@
 							},
 							{
 								"source": {
-									"name": "Status"
+									"name": "Status",
+									"type": "Int16"
 								},
 								"sink": {
 									"name": "statecode",
