@@ -139,7 +139,7 @@
 							{
 								"source": {
 									"name": "Gender",
-									"type": "Int16"
+									"type": "String"
 								},
 								"sink": {
 									"name": "gendercode",
