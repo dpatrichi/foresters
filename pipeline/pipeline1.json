@@ -48,16 +48,6 @@
 							},
 							{
 								"source": {
-									"name": "Full Name",
-									"type": "String"
-								},
-								"sink": {
-									"name": "fullname",
-									"type": "String"
-								}
-							},
-							{
-								"source": {
 									"name": "First Name",
 									"type": "String"
 								},
