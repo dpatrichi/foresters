@@ -245,26 +245,6 @@
 									"name": "new_branchname",
 									"type": "String"
 								}
-							},
-							{
-								"source": {
-									"name": "HouseHold",
-									"type": "String"
-								},
-								"sink": {
-									"name": "new_householdname",
-									"type": "String"
-								}
-							},
-							{
-								"source": {
-									"name": "Status",
-									"type": "Int32"
-								},
-								"sink": {
-									"name": "statecode",
-									"type": "Int32"
-								}
 							}
 						]
 					}
