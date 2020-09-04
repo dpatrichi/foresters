@@ -139,7 +139,7 @@
 							{
 								"source": {
 									"name": "Gender",
-									"type": "String"
+									"type": "Int32"
 								},
 								"sink": {
 									"name": "gendercode",
@@ -159,7 +159,7 @@
 							{
 								"source": {
 									"name": "Marital Status",
-									"type": "Int16"
+									"type": "Int32"
 								},
 								"sink": {
 									"name": "familystatuscode",
