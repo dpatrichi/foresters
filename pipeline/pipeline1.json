@@ -269,7 +269,7 @@
 							{
 								"source": {
 									"name": "Status",
-									"type": "Int32"
+									"type": "Boolean"
 								},
 								"sink": {
 									"name": "statecode",
