@@ -10,7 +10,7 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobStorageLocation",
-				"fileName": "*.*",
+				"fileName": "Foresters_Contacts",
 				"container": "foresters-transformed"
 			},
 			"columnDelimiter": ",",
