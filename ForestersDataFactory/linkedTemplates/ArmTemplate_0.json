@@ -1,0 +1,1327 @@
+{
+	"$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"type": "string",
+			"metadata": "Data Factory name",
+			"defaultValue": "ForestersDataFactory"
+		},
+		"AzureBlobStorage1_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'AzureBlobStorage1'"
+		},
+		"AzureBlobStorageForesters_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'AzureBlobStorageForesters'"
+		},
+		"CommonDataServiceForApps1_servicePrincipalCredential": {
+			"type": "secureString",
+			"metadata": "Secure string for 'servicePrincipalCredential' of 'CommonDataServiceForApps1'"
+		},
+		"Dynamics1_password": {
+			"type": "secureString",
+			"metadata": "Secure string for 'password' of 'Dynamics1'"
+		},
+		"ForestersTransformed_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'ForestersTransformed'"
+		},
+		"DynamicsLinkedService_password": {
+			"type": "secureString",
+			"metadata": "Secure string for 'password' of 'DynamicsLinkedService'"
+		},
+		"AzureKeyVault1_properties_typeProperties_baseUrl": {
+			"type": "string",
+			"defaultValue": "https://ForestersKeyVault.vault.azure.net/"
+		},
+		"CommonDataServiceForApps1_properties_typeProperties_servicePrincipalId": {
+			"type": "string",
+			"defaultValue": "27ce55cd-600e-42b0-9542-6b00375744f9"
+		},
+		"Dynamics1_properties_typeProperties_username": {
+			"type": "string",
+			"defaultValue": " dpatrichi@99ontarioinc.onmicrosoft.com"
+		},
+		"DynamicsLinkedService_properties_typeProperties_username": {
+			"type": "string",
+			"defaultValue": "dpatrichi@99OntarioInc.onmicrosoft.com"
+		}
+	},
+	"variables": {
+		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
+	},
+	"resources": [
+		{
+			"name": "[concat(parameters('factoryName'), '/D365WebAPITest')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"description": "D365WebAPITest",
+				"activities": [
+					{
+						"name": "GetD365AccessToken",
+						"type": "WebActivity",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"url": {
+								"value": "@concat('https://login.microsoftonline.com/', variables('TenantID'), '/oauth2/token')",
+								"type": "Expression"
+							},
+							"method": "POST",
+							"headers": {
+								"Content-Type": "application/x-www-form-urlencoded"
+							},
+							"body": {
+								"value": "@variables('AuthRequestBody')",
+								"type": "Expression"
+							}
+						}
+					},
+					{
+						"name": "WhoAmIReques",
+						"description": "WhoAmIReques",
+						"type": "WebActivity",
+						"dependsOn": [
+							{
+								"activity": "GetD365AccessToken",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"url": "https://99ontarioinc.crm3.dynamics.com/api/data/v9.1/WhoAmI",
+							"method": "GET",
+							"headers": {
+								"Authorization": {
+									"value": "@concat('Bearer ', activity('GetD365AccessToken').output.access_token)",
+									"type": "Expression"
+								}
+							}
+						}
+					}
+				],
+				"concurrency": 1,
+				"variables": {
+					"TenantID": {
+						"type": "String",
+						"defaultValue": "aee40b0d-a143-47a9-a9e2-7bc10aeaae4e"
+					},
+					"AuthRequestBody": {
+						"type": "String",
+						"defaultValue": "client_id=27ce55cd-600e-42b0-9542-6b00375744f9&grant_type=client_credentials&redirect_uri=https%3A%2F%2Fadf.azure.com%2F&resource=https%3A%2F%2F99ontarioinc.crm3.dynamics.com%2F&client_secret=SjM_A-_89SH504.bEfD5xM.jqYWvav.gZm"
+					},
+					"D365URL": {
+						"type": "String",
+						"defaultValue": "https://99ontarioinc.crm3.dynamics.com/"
+					}
+				},
+				"annotations": [],
+				"lastPublishTime": "2020-09-03T14:06:51Z"
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/AzureBlobStorage1')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureBlobStorage",
+				"typeProperties": {
+					"connectionString": "[parameters('AzureBlobStorage1_connectionString')]"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/AzureBlobStorageForesters')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureBlobStorage",
+				"typeProperties": {
+					"connectionString": "[parameters('AzureBlobStorageForesters_connectionString')]"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/AzureKeyVault1')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureKeyVault",
+				"typeProperties": {
+					"baseUrl": "[parameters('AzureKeyVault1_properties_typeProperties_baseUrl')]"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/CommonDataServiceForApps1')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "CommonDataServiceForApps",
+				"typeProperties": {
+					"deploymentType": "Online",
+					"serviceUri": "https://99ontarioinc.crm3.dynamics.com",
+					"authenticationType": "AADServicePrincipal",
+					"servicePrincipalCredentialType": "ServicePrincipalKey",
+					"servicePrincipalId": "[parameters('CommonDataServiceForApps1_properties_typeProperties_servicePrincipalId')]",
+					"servicePrincipalCredential": {
+						"type": "SecureString",
+						"value": "[parameters('CommonDataServiceForApps1_servicePrincipalCredential')]"
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Dynamics1')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "Dynamics",
+				"typeProperties": {
+					"deploymentType": "Online",
+					"serviceUri": "https://99ontarioinc.crm3.dynamics.com",
+					"authenticationType": "Office365",
+					"username": "[parameters('Dynamics1_properties_typeProperties_username')]",
+					"password": {
+						"type": "SecureString",
+						"value": "[parameters('Dynamics1_password')]"
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/ForestersTransformed')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureBlobStorage",
+				"typeProperties": {
+					"connectionString": "[parameters('ForestersTransformed_connectionString')]"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/integrationRuntime1')]",
+			"type": "Microsoft.DataFactory/factories/integrationRuntimes",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"type": "Managed",
+				"typeProperties": {
+					"computeProperties": {
+						"location": "AutoResolve",
+						"dataFlowProperties": {
+							"computeType": "General",
+							"coreCount": 8,
+							"timeToLive": 0
+						}
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/default')]",
+			"type": "Microsoft.DataFactory/factories/managedVirtualNetworks",
+			"apiVersion": "2018-06-01",
+			"properties": {},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/CommonDataServiceForAppsEntity2')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "CommonDataServiceForApps1",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "CommonDataServiceForAppsEntity",
+				"schema": [],
+				"typeProperties": {
+					"entityName": "contact"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/CommonDataServiceForApps1')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/ForestersContacts')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureBlobStorageForesters",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "Excel",
+				"typeProperties": {
+					"sheetName": "Contact",
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"fileName": "Foresters -  Active Contacts.xlsx",
+						"container": "foresters"
+					},
+					"firstRowAsHeader": true
+				},
+				"schema": [
+					{
+						"name": "(Do Not Modify)Contact",
+						"type": "String"
+					},
+					{
+						"name": "(Do Not Modify)Checksum",
+						"type": "String"
+					},
+					{
+						"name": "(Do Not Modify)Modified On",
+						"type": "String"
+					},
+					{
+						"name": "Contact",
+						"type": "String"
+					},
+					{
+						"name": "First Name",
+						"type": "String"
+					},
+					{
+						"name": "Last Name",
+						"type": "String"
+					},
+					{
+						"name": "Middle Name",
+						"type": "String"
+					},
+					{
+						"name": "SSN/SIN",
+						"type": "String"
+					},
+					{
+						"name": "Home Phone",
+						"type": "String"
+					},
+					{
+						"name": "Primary Phone",
+						"type": "String"
+					},
+					{
+						"name": "(Do Not Modify)Primary Phone",
+						"type": "String"
+					},
+					{
+						"name": "Mobile Phone",
+						"type": "String"
+					},
+					{
+						"name": "E-mail",
+						"type": "String"
+					},
+					{
+						"name": "Gender",
+						"type": "String"
+					},
+					{
+						"name": "(Do Not Modify)Gender",
+						"type": "String"
+					},
+					{
+						"name": "Date of Birth",
+						"type": "String"
+					},
+					{
+						"name": "Age",
+						"type": "String"
+					},
+					{
+						"name": "Marital Status",
+						"type": "String"
+					},
+					{
+						"name": "(Do Not Modify)Marital Status",
+						"type": "String"
+					},
+					{
+						"name": "Home : Street 1",
+						"type": "String"
+					},
+					{
+						"name": "Home : Street 2",
+						"type": "String"
+					},
+					{
+						"name": "Home City",
+						"type": "String"
+					},
+					{
+						"name": "Home State/Province",
+						"type": "String"
+					},
+					{
+						"name": "(Do Not Modify)Home State/Province",
+						"type": "String"
+					},
+					{
+						"name": "Home : ZIP/Postal Code",
+						"type": "String"
+					},
+					{
+						"name": "Home Country/Region",
+						"type": "String"
+					},
+					{
+						"name": "(Do Not Modify)Home Country/Region",
+						"type": "String"
+					},
+					{
+						"name": "Member",
+						"type": "String"
+					},
+					{
+						"name": "(Do Not Modify)Member",
+						"type": "String"
+					},
+					{
+						"name": "Producer",
+						"type": "String"
+					},
+					{
+						"name": "(Do Not Modify)Producer",
+						"type": "String"
+					},
+					{
+						"name": "Branch",
+						"type": "String"
+					},
+					{
+						"name": "(Do Not Modify)Branch",
+						"type": "String"
+					},
+					{
+						"name": "Description",
+						"type": "String"
+					},
+					{
+						"name": "HouseHold",
+						"type": "String"
+					},
+					{
+						"name": "(Do Not Modify)HouseHold",
+						"type": "String"
+					},
+					{
+						"name": "Status",
+						"type": "String"
+					},
+					{
+						"name": "(Do Not Modify)Status",
+						"type": "String"
+					}
+				]
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/AzureBlobStorageForesters')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/InputCSV')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureBlobStorage1",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"fileName": "Foresters - Active Contacts 2.csv",
+						"container": "foresters"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": [
+					{
+						"name": "ContactId",
+						"type": "String"
+					},
+					{
+						"name": "First Name",
+						"type": "String"
+					},
+					{
+						"name": "Last Name",
+						"type": "String"
+					},
+					{
+						"name": "Middle Name",
+						"type": "String"
+					},
+					{
+						"name": "SSN/SIN",
+						"type": "String"
+					},
+					{
+						"name": "Home Phone",
+						"type": "String"
+					},
+					{
+						"name": "Primary Phone",
+						"type": "String"
+					},
+					{
+						"name": "Mobile Phone",
+						"type": "String"
+					},
+					{
+						"name": "E-mail",
+						"type": "String"
+					},
+					{
+						"name": "Gender",
+						"type": "String"
+					},
+					{
+						"name": "Date of Birth",
+						"type": "String"
+					},
+					{
+						"name": "Marital Status",
+						"type": "String"
+					},
+					{
+						"name": "Home : Street 1",
+						"type": "String"
+					},
+					{
+						"name": "Home : Street 2",
+						"type": "String"
+					},
+					{
+						"name": "Home City",
+						"type": "String"
+					},
+					{
+						"name": "Home State/Province",
+						"type": "String"
+					},
+					{
+						"name": "Home : ZIP/Postal Code",
+						"type": "String"
+					},
+					{
+						"name": "Home Country/Region",
+						"type": "String"
+					},
+					{
+						"name": "Member",
+						"type": "String"
+					},
+					{
+						"name": "Producer",
+						"type": "String"
+					},
+					{
+						"name": "Branch",
+						"type": "String"
+					},
+					{
+						"name": "HouseHold",
+						"type": "String"
+					},
+					{
+						"name": "Status",
+						"type": "String"
+					}
+				]
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/AzureBlobStorage1')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/InputCSVFile')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureBlobStorageForesters",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"fileName": "Foresters - Active Contacts 2.csv",
+						"container": "foresters"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"quoteChar": "\""
+				},
+				"schema": [
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					}
+				]
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/AzureBlobStorageForesters')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/TransformedCSV')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "ForestersTransformed",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"container": "foresters-transformed"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": [
+					{
+						"name": "ContactId",
+						"type": "String"
+					},
+					{
+						"name": "First Name",
+						"type": "String"
+					},
+					{
+						"name": "Last Name",
+						"type": "String"
+					},
+					{
+						"name": "Middle Name",
+						"type": "String"
+					},
+					{
+						"name": "SSN/SIN",
+						"type": "String"
+					},
+					{
+						"name": "Home Phone",
+						"type": "String"
+					},
+					{
+						"name": "Primary Phone",
+						"type": "String"
+					},
+					{
+						"name": "Mobile Phone",
+						"type": "String"
+					},
+					{
+						"name": "E-mail",
+						"type": "String"
+					},
+					{
+						"name": "Gender",
+						"type": "String"
+					},
+					{
+						"name": "Date of Birth",
+						"type": "String"
+					},
+					{
+						"name": "Marital Status",
+						"type": "String"
+					},
+					{
+						"name": "Home : Street 1",
+						"type": "String"
+					},
+					{
+						"name": "Home : Street 2",
+						"type": "String"
+					},
+					{
+						"name": "Home City",
+						"type": "String"
+					},
+					{
+						"name": "Home State/Province",
+						"type": "String"
+					},
+					{
+						"name": "Home : ZIP/Postal Code",
+						"type": "String"
+					},
+					{
+						"name": "Home Country/Region",
+						"type": "String"
+					},
+					{
+						"name": "Member",
+						"type": "String"
+					},
+					{
+						"name": "Producer",
+						"type": "String"
+					},
+					{
+						"name": "Branch",
+						"type": "String"
+					},
+					{
+						"name": "HouseHold",
+						"type": "String"
+					},
+					{
+						"name": "Status",
+						"type": "String"
+					}
+				]
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/ForestersTransformed')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/integrationRuntime2')]",
+			"type": "Microsoft.DataFactory/factories/integrationRuntimes",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"type": "Managed",
+				"typeProperties": {
+					"computeProperties": {
+						"location": "East US",
+						"dataFlowProperties": {
+							"computeType": "General",
+							"coreCount": 8,
+							"timeToLive": 0
+						}
+					}
+				},
+				"managedVirtualNetwork": {
+					"type": "ManagedVirtualNetworkReference",
+					"referenceName": "default"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/managedVirtualNetworks/default')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/TransformedCSVFile')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "ForestersTransformed",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"fileName": "Foresters_Contacts",
+						"container": "foresters-transformed"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": [
+					{
+						"name": "ContactId",
+						"type": "String"
+					},
+					{
+						"name": "First Name",
+						"type": "String"
+					},
+					{
+						"name": "Last Name",
+						"type": "String"
+					},
+					{
+						"name": "Middle Name",
+						"type": "String"
+					},
+					{
+						"name": "SSN/SIN",
+						"type": "String"
+					},
+					{
+						"name": "Home Phone",
+						"type": "String"
+					},
+					{
+						"name": "Primary Phone",
+						"type": "String"
+					},
+					{
+						"name": "Mobile Phone",
+						"type": "String"
+					},
+					{
+						"name": "E-mail",
+						"type": "String"
+					},
+					{
+						"name": "Gender",
+						"type": "String"
+					},
+					{
+						"name": "Date of Birth",
+						"type": "String"
+					},
+					{
+						"name": "Marital Status",
+						"type": "String"
+					},
+					{
+						"name": "Home : Street 1",
+						"type": "String"
+					},
+					{
+						"name": "Home : Street 2",
+						"type": "String"
+					},
+					{
+						"name": "Home City",
+						"type": "String"
+					},
+					{
+						"name": "Home State/Province",
+						"type": "String"
+					},
+					{
+						"name": "Home : ZIP/Postal Code",
+						"type": "String"
+					},
+					{
+						"name": "Home Country/Region",
+						"type": "String"
+					},
+					{
+						"name": "Member",
+						"type": "String"
+					},
+					{
+						"name": "Producer",
+						"type": "String"
+					},
+					{
+						"name": "Branch",
+						"type": "String"
+					},
+					{
+						"name": "HouseHold",
+						"type": "String"
+					},
+					{
+						"name": "Status",
+						"type": "String"
+					}
+				]
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/ForestersTransformed')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/pipeline1')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Excel To Dynamics CRM 365",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "DelimitedTextSource",
+								"storeSettings": {
+									"type": "AzureBlobStorageReadSettings",
+									"recursive": true
+								},
+								"formatSettings": {
+									"type": "DelimitedTextReadSettings"
+								}
+							},
+							"sink": {
+								"type": "CommonDataServiceForAppsSink",
+								"writeBatchSize": 10,
+								"writeBehavior": "upsert",
+								"ignoreNullValues": false,
+								"maxConcurrentConnections": 2
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"mappings": [
+									{
+										"source": {
+											"name": "ContactId",
+											"type": "Guid"
+										},
+										"sink": {
+											"name": "contactid",
+											"type": "Guid"
+										}
+									},
+									{
+										"source": {
+											"name": "First Name",
+											"type": "String"
+										},
+										"sink": {
+											"name": "firstname",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "Last Name",
+											"type": "String"
+										},
+										"sink": {
+											"name": "lastname",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "Middle Name",
+											"type": "String"
+										},
+										"sink": {
+											"name": "middlename",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "SSN/SIN",
+											"type": "String"
+										},
+										"sink": {
+											"name": "new_socialsecuritynumber",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "Home Phone",
+											"type": "String"
+										},
+										"sink": {
+											"name": "telephone1",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "Primary Phone",
+											"type": "String"
+										},
+										"sink": {
+											"name": "telephone2",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "Mobile Phone",
+											"type": "String"
+										},
+										"sink": {
+											"name": "telephone3",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "E-mail",
+											"type": "String"
+										},
+										"sink": {
+											"name": "emailaddress1",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "Gender",
+											"type": "Int32"
+										},
+										"sink": {
+											"name": "gendercode",
+											"type": "Int32"
+										}
+									},
+									{
+										"source": {
+											"name": "Date of Birth",
+											"type": "String"
+										},
+										"sink": {
+											"name": "birthdate",
+											"type": "DateTime"
+										}
+									},
+									{
+										"source": {
+											"name": "Marital Status",
+											"type": "Int32"
+										},
+										"sink": {
+											"name": "familystatuscode",
+											"type": "Int32"
+										}
+									},
+									{
+										"source": {
+											"name": "Home : Street 1",
+											"type": "String"
+										},
+										"sink": {
+											"name": "address1_line1",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "Home : Street 2",
+											"type": "String"
+										},
+										"sink": {
+											"name": "address1_line2",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "Home City",
+											"type": "String"
+										},
+										"sink": {
+											"name": "address1_city",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "Home State/Province",
+											"type": "String"
+										},
+										"sink": {
+											"name": "address1_stateorprovince",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "Home : ZIP/Postal Code",
+											"type": "String"
+										},
+										"sink": {
+											"name": "address1_postalcode",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "Home Country/Region",
+											"type": "String"
+										},
+										"sink": {
+											"name": "address1_country",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "Member",
+											"type": "Boolean"
+										},
+										"sink": {
+											"name": "new_member",
+											"type": "Boolean"
+										}
+									},
+									{
+										"source": {
+											"name": "Producer",
+											"type": "Boolean"
+										},
+										"sink": {
+											"name": "new_producer",
+											"type": "Boolean"
+										}
+									},
+									{
+										"source": {
+											"name": "Branch",
+											"type": "String"
+										},
+										"sink": {
+											"name": "new_branchname",
+											"type": "String"
+										}
+									}
+								]
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "TransformedCSVFile",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "CommonDataServiceForAppsEntity2",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					}
+				],
+				"concurrency": 2,
+				"annotations": [],
+				"lastPublishTime": "2020-09-03T14:06:52Z"
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/TransformedCSVFile')]",
+				"[concat(variables('factoryId'), '/datasets/CommonDataServiceForAppsEntity2')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DynamicsLinkedService')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "Dynamics",
+				"typeProperties": {
+					"deploymentType": "Online",
+					"serviceUri": "https://99ontarioinc.crm3.dynamics.com",
+					"authenticationType": "Office365",
+					"username": "[parameters('DynamicsLinkedService_properties_typeProperties_username')]",
+					"password": {
+						"type": "SecureString",
+						"value": "[parameters('DynamicsLinkedService_password')]"
+					}
+				},
+				"connectVia": {
+					"referenceName": "integrationRuntime2",
+					"type": "IntegrationRuntimeReference"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/integrationRuntimes/integrationRuntime2')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/dataflow1')]",
+			"type": "Microsoft.DataFactory/factories/dataflows",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"type": "MappingDataFlow",
+				"typeProperties": {
+					"sources": [
+						{
+							"dataset": {
+								"referenceName": "InputCSV",
+								"type": "DatasetReference"
+							},
+							"name": "SourceCSVFile"
+						}
+					],
+					"sinks": [
+						{
+							"dataset": {
+								"referenceName": "TransformedCSV",
+								"type": "DatasetReference"
+							},
+							"name": "TransformedCSVFile"
+						}
+					],
+					"transformations": [
+						{
+							"name": "DerivedColumn1"
+						}
+					],
+					"script": "source(output(\n\t\tContactId as string,\n\t\t{First Name} as string,\n\t\t{Last Name} as string,\n\t\t{Middle Name} as string,\n\t\t{SSN/SIN} as string,\n\t\t{Home Phone} as string,\n\t\t{Primary Phone} as string,\n\t\t{Mobile Phone} as string,\n\t\t{E-mail} as string,\n\t\tGender as string,\n\t\t{Date of Birth} as string,\n\t\t{Marital Status} as string,\n\t\t{Home : Street 1} as string,\n\t\t{Home : Street 2} as string,\n\t\t{Home City} as string,\n\t\t{Home State/Province} as string,\n\t\t{Home : ZIP/Postal Code} as string,\n\t\t{Home Country/Region} as string,\n\t\tMember as string,\n\t\tProducer as string,\n\t\tBranch as string,\n\t\tHouseHold as string,\n\t\tStatus as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\twildcardPaths:['*.csv']) ~> SourceCSVFile\nSourceCSVFile derive(Gender = iif(Gender==\"M\",\"1\",iif(Gender==\"F\",\"2\",\"1\")),\n\t\t{Marital Status} = iif({Marital Status}==\"Single\",\"1\",iif({Marital Status}==\"Married\",\"2\",iif({Marital Status}==\"Divorced\",\"3\",\"2\"))),\n\t\tStatus = iif({Status}==\"Inactive\",\"1\",\"0\"),\n\t\tMember = iif(Member==\"Yes\",\"1\",iif(Member==\"No\",\"0\",\"0\")),\n\t\tProducer = iif(Producer==\"Yes\",\"1\",iif(Producer==\"No\",\"0\",\"0\"))) ~> DerivedColumn1\nDerivedColumn1 sink(input(\n\t\tContactId as string,\n\t\t{First Name} as string,\n\t\t{Last Name} as string,\n\t\t{Middle Name} as string,\n\t\t{SSN/SIN} as string,\n\t\t{Home Phone} as string,\n\t\t{Primary Phone} as string,\n\t\t{Mobile Phone} as string,\n\t\t{E-mail} as string,\n\t\tGender as string,\n\t\t{Date of Birth} as string,\n\t\t{Marital Status} as string,\n\t\t{Home : Street 1} as string,\n\t\t{Home : Street 2} as string,\n\t\t{Home City} as string,\n\t\t{Home State/Province} as string,\n\t\t{Home : ZIP/Postal Code} as string,\n\t\t{Home Country/Region} as string,\n\t\tMember as string,\n\t\tProducer as string,\n\t\tBranch as string,\n\t\tHouseHold as string,\n\t\tStatus as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\ttruncate: true,\n\tpartitionBy('hash', 1),\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> TransformedCSVFile"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/InputCSV')]",
+				"[concat(variables('factoryId'), '/datasets/TransformedCSV')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/dataflow1_copy1')]",
+			"type": "Microsoft.DataFactory/factories/dataflows",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"type": "MappingDataFlow",
+				"typeProperties": {
+					"sources": [
+						{
+							"dataset": {
+								"referenceName": "InputCSV",
+								"type": "DatasetReference"
+							},
+							"name": "SourceCSVFile"
+						}
+					],
+					"sinks": [
+						{
+							"dataset": {
+								"referenceName": "TransformedCSV",
+								"type": "DatasetReference"
+							},
+							"name": "TransformedCSVFile"
+						}
+					],
+					"transformations": [
+						{
+							"name": "DerivedColumn1"
+						}
+					],
+					"script": "source(output(\n\t\tContactId as string,\n\t\t{First Name} as string,\n\t\t{Last Name} as string,\n\t\t{Middle Name} as string,\n\t\t{SSN/SIN} as string,\n\t\t{Home Phone} as string,\n\t\t{Primary Phone} as string,\n\t\t{Mobile Phone} as string,\n\t\t{E-mail} as string,\n\t\tGender as string,\n\t\t{Date of Birth} as string,\n\t\t{Marital Status} as string,\n\t\t{Home : Street 1} as string,\n\t\t{Home : Street 2} as string,\n\t\t{Home City} as string,\n\t\t{Home State/Province} as string,\n\t\t{Home : ZIP/Postal Code} as string,\n\t\t{Home Country/Region} as string,\n\t\tMember as string,\n\t\tProducer as string,\n\t\tBranch as string,\n\t\tHouseHold as string,\n\t\tStatus as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: true,\n\twildcardPaths:['*.csv']) ~> SourceCSVFile\nSourceCSVFile derive(Gender = iif(Gender==\"M\",\"1\",iif(Gender==\"F\",\"2\",\"1\")),\n\t\t{Marital Status} = iif({Marital Status}==\"Single\",\"1\",iif({Marital Status}==\"Married\",\"2\",iif({Marital Status}==\"Divorced\",\"3\",\"2\"))),\n\t\tStatus = iif({Status}==\"Inactive\",\"1\",\"0\")) ~> DerivedColumn1\nDerivedColumn1 sink(input(\n\t\tContactId as string,\n\t\t{First Name} as string,\n\t\t{Last Name} as string,\n\t\t{Middle Name} as string,\n\t\t{SSN/SIN} as string,\n\t\t{Home Phone} as string,\n\t\t{Primary Phone} as string,\n\t\t{Mobile Phone} as string,\n\t\t{E-mail} as string,\n\t\tGender as string,\n\t\t{Date of Birth} as string,\n\t\t{Marital Status} as string,\n\t\t{Home : Street 1} as string,\n\t\t{Home : Street 2} as string,\n\t\t{Home City} as string,\n\t\t{Home State/Province} as string,\n\t\t{Home : ZIP/Postal Code} as string,\n\t\t{Home Country/Region} as string,\n\t\tMember as string,\n\t\tProducer as string,\n\t\tBranch as string,\n\t\tHouseHold as string,\n\t\tStatus as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\ttruncate: true,\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> TransformedCSVFile"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/InputCSV')]",
+				"[concat(variables('factoryId'), '/datasets/TransformedCSV')]"
+			]
+		}
+	]
+}

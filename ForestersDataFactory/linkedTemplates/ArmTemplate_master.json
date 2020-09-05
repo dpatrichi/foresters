@@ -1,0 +1,132 @@
+{
+	"$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"type": "string",
+			"metadata": "Data Factory name",
+			"defaultValue": "ForestersDataFactory"
+		},
+		"AzureBlobStorage1_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'AzureBlobStorage1'"
+		},
+		"AzureBlobStorageForesters_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'AzureBlobStorageForesters'"
+		},
+		"CommonDataServiceForApps1_servicePrincipalCredential": {
+			"type": "secureString",
+			"metadata": "Secure string for 'servicePrincipalCredential' of 'CommonDataServiceForApps1'"
+		},
+		"Dynamics1_password": {
+			"type": "secureString",
+			"metadata": "Secure string for 'password' of 'Dynamics1'"
+		},
+		"DynamicsLinkedService_password": {
+			"type": "secureString",
+			"metadata": "Secure string for 'password' of 'DynamicsLinkedService'"
+		},
+		"ForestersTransformed_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'ForestersTransformed'"
+		},
+		"AzureKeyVault1_properties_typeProperties_baseUrl": {
+			"type": "string",
+			"defaultValue": "https://ForestersKeyVault.vault.azure.net/"
+		},
+		"CommonDataServiceForApps1_properties_typeProperties_servicePrincipalId": {
+			"type": "string",
+			"defaultValue": "27ce55cd-600e-42b0-9542-6b00375744f9"
+		},
+		"Dynamics1_properties_typeProperties_username": {
+			"type": "string",
+			"defaultValue": " dpatrichi@99ontarioinc.onmicrosoft.com"
+		},
+		"DynamicsLinkedService_properties_typeProperties_username": {
+			"type": "string",
+			"defaultValue": "dpatrichi@99OntarioInc.onmicrosoft.com"
+		},
+		"containerUri": {
+			"type": "string",
+			"metadata": "URI to storage account containing linked ARM templates"
+		},
+		"containerSasToken": {
+			"type": "string",
+			"metadata": "Sas token to storage account containing linked ARM templates"
+		}
+	},
+	"variables": {
+		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
+	},
+	"resources": [
+		{
+			"name": "ForestersDataFactory_ArmTemplate_0",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "2018-02-01",
+			"properties": {
+				"mode": "incremental",
+				"templateLink": {
+					"uri": "[concat(parameters('containerUri'), '/ArmTemplate_0.json', parameters('containerSasToken'))]",
+					"contentVersion": "1.0.0.0"
+				},
+				"parameters": {
+					"factoryName": {
+						"value": "[parameters('factoryName')]"
+					},
+					"AzureBlobStorage1_connectionString": {
+						"value": "[parameters('AzureBlobStorage1_connectionString')]"
+					},
+					"AzureBlobStorageForesters_connectionString": {
+						"value": "[parameters('AzureBlobStorageForesters_connectionString')]"
+					},
+					"CommonDataServiceForApps1_servicePrincipalCredential": {
+						"value": "[parameters('CommonDataServiceForApps1_servicePrincipalCredential')]"
+					},
+					"Dynamics1_password": {
+						"value": "[parameters('Dynamics1_password')]"
+					},
+					"ForestersTransformed_connectionString": {
+						"value": "[parameters('ForestersTransformed_connectionString')]"
+					},
+					"DynamicsLinkedService_password": {
+						"value": "[parameters('DynamicsLinkedService_password')]"
+					},
+					"AzureKeyVault1_properties_typeProperties_baseUrl": {
+						"value": "[parameters('AzureKeyVault1_properties_typeProperties_baseUrl')]"
+					},
+					"CommonDataServiceForApps1_properties_typeProperties_servicePrincipalId": {
+						"value": "[parameters('CommonDataServiceForApps1_properties_typeProperties_servicePrincipalId')]"
+					},
+					"Dynamics1_properties_typeProperties_username": {
+						"value": "[parameters('Dynamics1_properties_typeProperties_username')]"
+					},
+					"DynamicsLinkedService_properties_typeProperties_username": {
+						"value": "[parameters('DynamicsLinkedService_properties_typeProperties_username')]"
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "ForestersDataFactory_ArmTemplate_1",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "2018-02-01",
+			"properties": {
+				"mode": "incremental",
+				"templateLink": {
+					"uri": "[concat(parameters('containerUri'), '/ArmTemplate_1.json', parameters('containerSasToken'))]",
+					"contentVersion": "1.0.0.0"
+				},
+				"parameters": {
+					"factoryName": {
+						"value": "[parameters('factoryName')]"
+					}
+				}
+			},
+			"dependsOn": [
+				"[resourceId('Microsoft.Resources/deployments', 'ForestersDataFactory_ArmTemplate_0')]"
+			]
+		}
+	]
+}

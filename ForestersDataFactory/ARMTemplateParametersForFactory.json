@@ -1,0 +1,39 @@
+{
+	"$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"value": "ForestersDataFactory"
+		},
+		"AzureBlobStorage1_connectionString": {
+			"value": ""
+		},
+		"AzureBlobStorageForesters_connectionString": {
+			"value": ""
+		},
+		"CommonDataServiceForApps1_servicePrincipalCredential": {
+			"value": ""
+		},
+		"Dynamics1_password": {
+			"value": ""
+		},
+		"DynamicsLinkedService_password": {
+			"value": ""
+		},
+		"ForestersTransformed_connectionString": {
+			"value": ""
+		},
+		"AzureKeyVault1_properties_typeProperties_baseUrl": {
+			"value": "https://ForestersKeyVault.vault.azure.net/"
+		},
+		"CommonDataServiceForApps1_properties_typeProperties_servicePrincipalId": {
+			"value": "27ce55cd-600e-42b0-9542-6b00375744f9"
+		},
+		"Dynamics1_properties_typeProperties_username": {
+			"value": " dpatrichi@99ontarioinc.onmicrosoft.com"
+		},
+		"DynamicsLinkedService_properties_typeProperties_username": {
+			"value": "dpatrichi@99OntarioInc.onmicrosoft.com"
+		}
+	}
+}
