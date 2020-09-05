@@ -251,7 +251,7 @@
 				},
 				"inputs": [
 					{
-						"referenceName": "TransformedCSV",
+						"referenceName": "TransformedCSVFile",
 						"type": "DatasetReference"
 					}
 				],
