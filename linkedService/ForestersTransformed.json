@@ -6,7 +6,7 @@
 		"type": "AzureBlobStorage",
 		"typeProperties": {
 			"connectionString": "DefaultEndpointsProtocol=https;AccountName=forestersstorageaccount;EndpointSuffix=core.windows.net;",
-			"encryptedCredential": "ew0KICAiVmVyc2lvbiI6ICIyMDE3LTExLTMwIiwNCiAgIlByb3RlY3Rpb25Nb2RlIjogIktleSIsDQogICJTZWNyZXRDb250ZW50VHlwZSI6ICJQbGFpbnRleHQiLA0KICAiQ3JlZGVudGlhbElkIjogIkZPUkVTVEVSU0RBVEFGQUNUT1JZXzMzYzBhMzk3LTY2NWMtNDgyZi1hOWJhLTNmYmNmNzBlMmNkOCINCn0="
+			"encryptedCredential": "ew0KICAiVmVyc2lvbiI6ICIyMDE3LTExLTMwIiwNCiAgIlByb3RlY3Rpb25Nb2RlIjogIktleSIsDQogICJTZWNyZXRDb250ZW50VHlwZSI6ICJQbGFpbnRleHQiLA0KICAiQ3JlZGVudGlhbElkIjogIkZPUkVTVEVSU0RBVEFGQUNUT1JZXzRkNmY2ZGQ0LTYyNGItNGZjMC1iZTBkLTYzMTdlMzBkY2E0ZCINCn0="
 		}
 	}
 }
