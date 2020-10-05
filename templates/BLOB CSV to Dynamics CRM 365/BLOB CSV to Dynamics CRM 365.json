@@ -1,0 +1,434 @@
+{
+	"$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"type": "string",
+			"metadata": "Data Factory name"
+		},
+		"ForestersTransformed": {
+			"type": "string"
+		},
+		"CommonDataServiceForApps1": {
+			"type": "string"
+		}
+	},
+	"variables": {
+		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
+	},
+	"resources": [
+		{
+			"name": "[concat(parameters('factoryName'), '/pipeline1')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Local SQL Server To Dynamics CRM 365",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "DelimitedTextSource",
+								"storeSettings": {
+									"type": "AzureBlobStorageReadSettings",
+									"recursive": true
+								},
+								"formatSettings": {
+									"type": "DelimitedTextReadSettings"
+								}
+							},
+							"sink": {
+								"type": "CommonDataServiceForAppsSink",
+								"writeBatchSize": 10,
+								"writeBehavior": "upsert",
+								"ignoreNullValues": false,
+								"maxConcurrentConnections": 2
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"mappings": [
+									{
+										"source": {
+											"name": "ContactId",
+											"type": "Guid"
+										},
+										"sink": {
+											"name": "contactid",
+											"type": "Guid"
+										}
+									},
+									{
+										"source": {
+											"name": "First Name",
+											"type": "String"
+										},
+										"sink": {
+											"name": "firstname",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "Last Name",
+											"type": "String"
+										},
+										"sink": {
+											"name": "lastname",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "Middle Name",
+											"type": "String"
+										},
+										"sink": {
+											"name": "middlename",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "SSN/SIN",
+											"type": "String"
+										},
+										"sink": {
+											"name": "new_socialsecuritynumber",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "Home Phone",
+											"type": "String"
+										},
+										"sink": {
+											"name": "telephone1",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "Primary Phone",
+											"type": "String"
+										},
+										"sink": {
+											"name": "telephone2",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "Mobile Phone",
+											"type": "String"
+										},
+										"sink": {
+											"name": "telephone3",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "E-mail",
+											"type": "String"
+										},
+										"sink": {
+											"name": "emailaddress1",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "Gender",
+											"type": "Int32"
+										},
+										"sink": {
+											"name": "gendercode",
+											"type": "Int32"
+										}
+									},
+									{
+										"source": {
+											"name": "Date of Birth",
+											"type": "String"
+										},
+										"sink": {
+											"name": "birthdate",
+											"type": "DateTime"
+										}
+									},
+									{
+										"source": {
+											"name": "Marital Status",
+											"type": "Int32"
+										},
+										"sink": {
+											"name": "familystatuscode",
+											"type": "Int32"
+										}
+									},
+									{
+										"source": {
+											"name": "Home : Street 1",
+											"type": "String"
+										},
+										"sink": {
+											"name": "address1_line1",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "Home : Street 2",
+											"type": "String"
+										},
+										"sink": {
+											"name": "address1_line2",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "Home City",
+											"type": "String"
+										},
+										"sink": {
+											"name": "address1_city",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "Home State/Province",
+											"type": "String"
+										},
+										"sink": {
+											"name": "address1_stateorprovince",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "Home : ZIP/Postal Code",
+											"type": "String"
+										},
+										"sink": {
+											"name": "address1_postalcode",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "Home Country/Region",
+											"type": "String"
+										},
+										"sink": {
+											"name": "address1_country",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "Member",
+											"type": "Boolean"
+										},
+										"sink": {
+											"name": "new_member",
+											"type": "Boolean"
+										}
+									},
+									{
+										"source": {
+											"name": "Producer",
+											"type": "Boolean"
+										},
+										"sink": {
+											"name": "new_producer",
+											"type": "Boolean"
+										}
+									},
+									{
+										"source": {
+											"name": "Branch",
+											"type": "String"
+										},
+										"sink": {
+											"name": "new_branchname",
+											"type": "String"
+										}
+									}
+								]
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "TransformedCSVFile",
+								"type": "DatasetReference"
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "CommonDataServiceForAppsEntity2",
+								"type": "DatasetReference"
+							}
+						]
+					}
+				],
+				"concurrency": 2,
+				"annotations": [],
+				"lastPublishTime": "2020-09-05T12:08:01Z"
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/TransformedCSVFile')]",
+				"[concat(variables('factoryId'), '/datasets/CommonDataServiceForAppsEntity2')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/TransformedCSVFile')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "[parameters('ForestersTransformed')]",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"fileName": "Foresters_Contacts",
+						"container": "foresters-transformed"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": [
+					{
+						"name": "ContactId",
+						"type": "String"
+					},
+					{
+						"name": "First Name",
+						"type": "String"
+					},
+					{
+						"name": "Last Name",
+						"type": "String"
+					},
+					{
+						"name": "Middle Name",
+						"type": "String"
+					},
+					{
+						"name": "SSN/SIN",
+						"type": "String"
+					},
+					{
+						"name": "Home Phone",
+						"type": "String"
+					},
+					{
+						"name": "Primary Phone",
+						"type": "String"
+					},
+					{
+						"name": "Mobile Phone",
+						"type": "String"
+					},
+					{
+						"name": "E-mail",
+						"type": "String"
+					},
+					{
+						"name": "Gender",
+						"type": "String"
+					},
+					{
+						"name": "Date of Birth",
+						"type": "String"
+					},
+					{
+						"name": "Marital Status",
+						"type": "String"
+					},
+					{
+						"name": "Home : Street 1",
+						"type": "String"
+					},
+					{
+						"name": "Home : Street 2",
+						"type": "String"
+					},
+					{
+						"name": "Home City",
+						"type": "String"
+					},
+					{
+						"name": "Home State/Province",
+						"type": "String"
+					},
+					{
+						"name": "Home : ZIP/Postal Code",
+						"type": "String"
+					},
+					{
+						"name": "Home Country/Region",
+						"type": "String"
+					},
+					{
+						"name": "Member",
+						"type": "String"
+					},
+					{
+						"name": "Producer",
+						"type": "String"
+					},
+					{
+						"name": "Branch",
+						"type": "String"
+					},
+					{
+						"name": "HouseHold",
+						"type": "String"
+					},
+					{
+						"name": "Status",
+						"type": "String"
+					}
+				]
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/CommonDataServiceForAppsEntity2')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "[parameters('CommonDataServiceForApps1')]",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "CommonDataServiceForAppsEntity",
+				"schema": [],
+				"typeProperties": {
+					"entityName": "contact"
+				}
+			},
+			"dependsOn": []
+		}
+	]
+}
