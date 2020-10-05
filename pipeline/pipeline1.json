@@ -3,7 +3,7 @@
 	"properties": {
 		"activities": [
 			{
-				"name": "Excel To Dynamics CRM 365",
+				"name": "Local SQL Server To Dynamics CRM 365",
 				"type": "Copy",
 				"dependsOn": [],
 				"policy": {
