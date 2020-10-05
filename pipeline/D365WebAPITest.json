@@ -56,7 +56,7 @@
 				},
 				"userProperties": [],
 				"typeProperties": {
-					"url": "https://99ontarioinc.crm3.dynamics.com/api/data/v9.1/WhoAmI",
+					"url": "https://forestersmembership.crm3.dynamics.com/api/data/v9.1/WhoAmI",
 					"method": "GET",
 					"headers": {
 						"Authorization": {
